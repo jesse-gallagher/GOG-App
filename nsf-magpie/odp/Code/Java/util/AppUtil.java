@@ -138,10 +138,16 @@ public enum AppUtil {
 		}
 	}
 	
-	public static void deleteAll(Collection<Path> paths) {
+	public static void deleteAllAndParents(Collection<Path> paths) {
 		paths.forEach(p -> {
 			try {
 				Files.deleteIfExists(p);
+			} catch(IOException e) {
+				// Ignore
+			}
+			
+			try {
+				Files.deleteIfExists(p.getParent());
 			} catch(IOException e) {
 				// Ignore
 			}

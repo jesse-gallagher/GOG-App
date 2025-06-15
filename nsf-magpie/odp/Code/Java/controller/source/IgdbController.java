@@ -165,7 +165,10 @@ public class IgdbController {
 			
 			gameDetailsRepository.save(details);
 		} finally {
-			AppUtil.deleteAll(cleanup);
+			if(!cleanup.isEmpty()) {
+				AppUtil.deleteAllAndParents(cleanup);
+				
+			}
 		}
 		
 		return "redirect:library/" + gameId;
