@@ -1,0 +1,8 @@
+/.settings/
+/META-INF/
+/build.properties
+/.classpath
+
+!/odp/.settings/
+!/odp/.project
+!/odp/.classpath
