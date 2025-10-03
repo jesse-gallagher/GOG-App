@@ -3,6 +3,7 @@ package controller.source;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -110,19 +111,31 @@ public class IgdbController {
 		
 		IgdbGame igdbGame = igdbGames.getFirst();
 
-		List<IgdbImage> screenshots = igdbGame.screenshotIds().stream()
-			.filter(Objects::nonNull)
-			.map(id -> igdbApi.listScreenshots(twitchId.getClientId(), "Bearer " + token, "fields *; where id = " + id + ";"))
-			.filter(shots -> !shots.isEmpty())
-			.map(List::getFirst)
-			.toList();
+		List<Integer> screenshotIds = igdbGame.screenshotIds();
+		List<IgdbImage> screenshots;
+		if(screenshotIds != null) {
+			screenshots = igdbGame.screenshotIds().stream()
+				.filter(Objects::nonNull)
+				.map(id -> igdbApi.listScreenshots(twitchId.getClientId(), "Bearer " + token, "fields *; where id = " + id + ";"))
+				.filter(shots -> !shots.isEmpty())
+				.map(List::getFirst)
+				.toList();
+		} else {
+			screenshots = Collections.emptyList();
+		}
 		
-		List<IgdbImage> artworks = igdbGame.artworkIds().stream()
+		List<Integer> artworkIds = igdbGame.artworkIds();
+		List<IgdbImage> artworks;
+		if(artworkIds != null) {
+			artworks = artworkIds.stream()
 				.filter(Objects::nonNull)
 				.map(id -> igdbApi.listArtworks(twitchId.getClientId(), "Bearer " + token, "fields *; where id = " + id + ";"))
 				.filter(shots -> !shots.isEmpty())
 				.map(List::getFirst)
 				.toList();
+		} else {
+			artworks = Collections.emptyList();
+		}
 		
 		detailsCache.put(resultId, igdbGame, screenshots, artworks);
 		
