@@ -1,6 +1,7 @@
 package controller;
 
 import jakarta.mvc.Controller;
+import jakarta.mvc.View;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -11,7 +12,7 @@ import jakarta.ws.rs.core.MediaType;
 public class HomeController {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public String get() {
-		return "home.jsp";
+	@View("home.jsp")
+	public void get() {
 	}
 }
